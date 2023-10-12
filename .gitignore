@@ -1,0 +1,13 @@
+back/config.py
+
+my_api_env/
+*.dat
+t2medium_key.pem
+README_private.md
+copy_ec2.sh
+flask_api.service
+application.py
+
+back/data/
+back/__pycache__
+__pycache__
