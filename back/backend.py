@@ -1,12 +1,6 @@
 import openai
 import pandas as pd
-import pickle
-import time
-import numpy as np
-from memory_profiler import profile
 
-
-# @profile
 def main_backend(question: str, temp: float, model: str, index, df):
 
     try:
@@ -21,10 +15,7 @@ def main_backend(question: str, temp: float, model: str, index, df):
     openai.api_key = OPENAI_API_KEY
     openai.Model.list()
 
-    start = time.time()
     prompt_sample, context_used_array_ints = UPDATE_construct_prompt(question, index, df)
-
-    print(f'Time for Constructing Prompt: {time.time() - start}')
 
     filtered_df_contexts = df.loc[context_used_array_ints]
     filtered_df_contexts.drop(['index','pubinfo','text'], axis=1, inplace=True)
@@ -43,6 +34,9 @@ def main_backend(question: str, temp: float, model: str, index, df):
         out = response['choices'][0]['message']['content'].strip(" \n")
         
     elif model == "completion":
+        """
+        This has been deprecated by the OpenAI API. Cannot be used anymore.
+        """
         response = openai.Completion.create(
                     prompt=prompt_sample,
                     temperature=temp,
@@ -54,7 +48,7 @@ def main_backend(question: str, temp: float, model: str, index, df):
     else:
         out = "ERROR WITH OPENAI CALL. Must specify if completion or chat, or rework the backend"
     
-    # print(out, json_df)
+
     return out, json_df
 
 if __name__ == "__main__":

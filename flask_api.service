@@ -1,0 +1,11 @@
+[Unit]
+Description=We are trying to keep this running even if it crashes! Let's goooooo
+After=network.target
+
+[Service]
+ExecStart=/home/ec2-user/flask_api/venv/bin/gunicorn -b 0.0.0.0:8000 application_aws:application
+WorkingDirectory=/home/ec2-user/flask_api
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

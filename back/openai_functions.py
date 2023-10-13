@@ -1,7 +1,5 @@
-## 
-## THESE FUNCTIONS ARE TAKEN FROM OPENAI COOKBOOK. I HAD TO MODIFY THE FUNCTION HEADS TO AVOID EXCEPTIONS
-## There are some slight modifications (such as .text instead of what they had)
-## But not enough to claim as my own
+## These functions are taken from OpenAI cookbook
+## There are slight changes, but I do not claim as my own work
 
 import pandas as pd
 import openai
@@ -11,15 +9,19 @@ import faiss
 
 EMBEDDING_MODEL = "text-embedding-ada-002"
 
-
 def get_embedding(text: str, model: str=EMBEDDING_MODEL):
+    """
+    Returns the vector embedding for a string.
+    """
+
     result = openai.Embedding.create(
       model=model,
       input=text
     )
+    
     return result["data"][0]["embedding"]
 
-def compute_doc_embeddings(df: pd.DataFrame): #-> dict[tuple[str, str], list[float]]
+def compute_doc_embeddings(df: pd.DataFrame): 
     """
     Create an embedding for each row in the dataframe using the OpenAI Embeddings API.
     
