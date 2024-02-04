@@ -8,6 +8,10 @@ import time
 import pandas as pd
 import faiss
 
+#paths to the embeddings and to the full dataset CSV
+path_to_pickle = '/home/ec2-user/flask_api/back/data/embeddings_full.pickle' 
+path_to_dataset = '/home/ec2-user/flask_api/back/data/FULL_DATA_new.csv'
+
 application = Flask(__name__)
 CORS(application, origins=['http://localhost:5000', 'http://localhost:4173', 'https://jrg.netlify.app', 'https://philosophy-chat.com', 'http://localhost:5173', EC2_API_URL])
 
@@ -32,31 +36,20 @@ def health_check():
 
 def load_data():
     global index, full_dataset
-    ##STARTING THE TIMER BEFORE WE LOAD DATASET
-    start = time.time()
-
-    ##### New Data Format ###### Change these to AWS paths
-    path_to_pickle = '/home/ec2-user/flask_api/back/data/embeddings_full.pickle' 
-    # path_to_pickle = '/Users/johngearig/Documents/GitHub/phil_gpt_flask_api/back/data/embeddings_full.pickle'
-
 
     with open(path_to_pickle, 'rb') as file:
         doc_embeddings = pickle.load(file)
         doc_embeddings = doc_embeddings.astype('float32')
 
-    # NEED TO LOAD the dataset so that the paragraphs can be returned with the dictionary
-    full_dataset = pd.read_csv('/home/ec2-user/flask_api/back/data/FULL_DATA_new.csv') 
-    # full_dataset = pd.read_csv('/Users/johngearig/Documents/GitHub/phil_gpt_flask_api/back/data/FULL_DATA_new.csv') 
-
+    full_dataset = pd.read_csv(path_to_dataset) 
     full_dataset = full_dataset.rename(columns={'Unnamed: 0': 'index'})
 
     index = faiss.IndexFlatIP(1536)
     index.add(doc_embeddings)      
     del doc_embeddings
 
-    print(f'Time for Loading Dataset into Faiss Index: {time.time() - start}')
-
 load_data()
+
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=8000)
 

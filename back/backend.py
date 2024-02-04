@@ -2,6 +2,10 @@ import openai
 import pandas as pd
 
 def main_backend(question: str, temp: float, model: str, index, df):
+    """
+    The main backend, which takes a question and returns the answer and sources
+    in a format that the Front End can parse.
+    """
 
     try:
         from back.config import OPENAI_API_KEY, COMPLETIONS_MODEL, CHAT_MODEL
@@ -15,12 +19,15 @@ def main_backend(question: str, temp: float, model: str, index, df):
     openai.api_key = OPENAI_API_KEY
     openai.Model.list()
 
+    #get the long string prompt from the input question and our data
     prompt_sample, context_used_array_ints = UPDATE_construct_prompt(question, index, df)
 
+    #format the table of our source paragraphs for readability
     filtered_df_contexts = df.loc[context_used_array_ints]
     filtered_df_contexts.drop(['index','pubinfo','text'], axis=1, inplace=True)
     json_df =  filtered_df_contexts.to_json(orient='records')
 
+    #Call OpenAI API and get answer
     if model == "chat":
         response = openai.ChatCompletion.create(
             model = CHAT_MODEL,
@@ -35,7 +42,7 @@ def main_backend(question: str, temp: float, model: str, index, df):
         
     elif model == "completion":
         """
-        This has been deprecated by the OpenAI API. Cannot be used anymore.
+        gpt-3.5-turbo-instruct is being used instead of text-davinci-003 now
         """
         response = openai.Completion.create(
                     prompt=prompt_sample,
@@ -46,13 +53,6 @@ def main_backend(question: str, temp: float, model: str, index, df):
 
         out = response["choices"][0]["text"].strip(" \n")
     else:
-        out = "ERROR WITH OPENAI CALL. Must specify if completion or chat, or rework the backend"
+        out = "Error. Need Chat or Completion"
     
-
     return out, json_df
-
-if __name__ == "__main__":
-    # main_backend()
-    # ans, source = main_backend("what is the meaning of life", 0.8, "chat")
-    # print(ans)
-    pass

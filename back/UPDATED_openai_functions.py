@@ -41,7 +41,7 @@ def UPDATE_construct_prompt(question: str, index, df: pd.DataFrame):
     It adds as many paragraphs of context from the sources as can fit as MAX_SECTION_LENGTH allows, 
     and returns a long string and an array that contains the sources used. 
 
-    'header' could be changed to try different prompting
+    The string 'header' could be changed to try different types of prompting.
     """
     most_relevant_document_sections = UPDATE_order_document_sections_by_query_similarity(question, index)
 

@@ -1,5 +1,6 @@
 ## These functions are taken from OpenAI cookbook
 ## There are slight changes, but I do not claim as my own work
+## This file is not being used right now.
 
 import pandas as pd
 import openai
