@@ -26,7 +26,7 @@ When a question is asked, and the API is called the following occurs:
 4. The answer is returned as text, as is a table that includes the sources and information to the source of the API call.
 
 ## Hosting:
-This runs on an AWS EC2 instance. A Load Balancer connects the Flask application on the EC2 to a URL where our frontend can make API calls. Using the Linux process manager ‘systemd’, if the program fails (and thus the data is no longer in memory), then it automatically restarts. This is ran by the ‘flask_api.service’ file. It is crucial for latency to have the dataset in memory so that when an API call is made, the data is already in the FAISS index and vector search does not take so long. 
+This runs on an AWS EC2 instance. A Load Balancer connects the Flask application on the EC2 to a URL where our frontend can make API calls. Using the Linux process manager ‘systemd’, if the program fails (and thus the data is no longer in memory), then it automatically restarts. This is ran by the `flask_api.service` file. It is crucial for latency to have the dataset in memory so that when an API call is made, the data is already in the FAISS index and vector search does not take so long. 
 
 ## Frontend:
 Without much experience, I decided to use Svelte, a JS framework to create a simple frontend. This is hosted via Netlify and syncs to a Github repository. If I push changes, they are reflected in production immediately and if there is a mistake, it is easy to undo. I am not currently sharing this code.
@@ -39,15 +39,17 @@ There are approximately 160,000 paragraphs (which come from ~1,800 articles), st
 It can be downloaded here:
 https://huggingface.co/datasets/empiricist/philosophy_chat/tree/main
 
-## To Run it:
+## To Run it locally:
 
-This repository contains the production backend code (application_aws.py), and a version that can be run locally via command line (application_local.py).
+This repository contains the production backend code (`application_aws.py`), and a version that can be run locally via command line (`application_local.py`).
 
 To run locally, you will need to download my data from https://huggingface.co/datasets/empiricist/philosophy_chat/tree/main and update paths at the top of application_local . Also, you will have to create a config.py file in the /back folder with the following information:
 
+```
 OPENAI_API_KEY= "your key here"
 COMPLETIONS_MODEL = "gpt-3.5-turbo-instruct"
 CHAT_MODEL = "gpt-3.5-turbo"
 EMBEDDING_MODEL = "text-embedding-ada-002"
+```
 
-Information about the dependencies can be found in requirements.txt
+Information about the dependencies can be found in `requirements.txt`
