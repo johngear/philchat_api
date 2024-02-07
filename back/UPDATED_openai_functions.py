@@ -55,13 +55,14 @@ def UPDATE_construct_prompt(question: str, index, df: pd.DataFrame):
         document_section = df.loc[df['index']==section_index] 
         
         chosen_sections_len += len(document_section.text.item()) + separator_len
-        if chosen_sections_len > MAX_SECTION_LEN:
-            #if the first source is too many characters, no context will be added. 
-            break
             
         chosen_sections.append(SEPARATOR + document_section.text.item().replace("\n", " ").strip())
         chosen_sections_indexes.append(str(section_index))
         chosen_sections_array.append(section_index)
+
+        #add 1 paragraph of context, even if it is very long, then break after
+        if chosen_sections_len > MAX_SECTION_LEN: 
+            break
             
     
     header = """Answer the question as truthfully as possible using the provided context, and if the answer is not contained within the text below, say "This is a guess, but:" then answer the question \n\nContext:\n"""
