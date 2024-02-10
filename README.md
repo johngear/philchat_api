@@ -1,4 +1,5 @@
 # Philosophy Chat API
+![cool pic of the School of Athens](https://github.com/johngear/philchat_api/blob/main/athens_copy.jpeg)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/dbd6b317-8660-4d36-b96d-4245b95b4195/deploy-status)](https://app.netlify.com/sites/jrg/deploys)
 
