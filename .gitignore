@@ -1,6 +1,5 @@
-back/config.py
+*/config.py
 
 my_api_env/
-*.dat
 t2medium_key.pem
 README_private.md
